@@ -10,41 +10,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/titleText"
         android:text="编码翻译器"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="4dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/subtitleText"
-        android:text="中文 → 编码 / 翻译"
-        android:textColor="@color/text_secondary"
-        android:textSize="13sp"
-        android:layout_gravity="center_horizontal"
         android:paddingBottom="12dp" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="输入中文"
-        android:textColorHint="@color/text_secondary"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minLines="3"
-            android:maxLines="5"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/surface"
-            android:inputType="textMultiLine" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,7 +23,6 @@
         android:text="选择转换方式"
         android:textColor="@color/text_secondary"
         android:textSize="13sp"
-        android:paddingTop="12dp"
         android:paddingBottom="8dp" />
 
     <HorizontalScrollView
@@ -148,73 +118,104 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="中文 / 原文"
+        android:textColorHint="@color/text_secondary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputChinese"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:maxLines="5"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/surface"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical">
+        android:layout_marginTop="8dp"
+        android:gravity="center">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/modeToggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="编码"
-            android:textSize="14sp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:textColor="@color/accent"
-            app:strokeColor="@color/accent"
-            app:cornerRadius="20dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/convertButton"
+            android:id="@+id/encodeButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="编 码"
-            android:textSize="16sp"
-            android:layout_marginStart="8dp"
+            android:text="↓ 编码"
+            android:textSize="15sp"
             android:backgroundTint="@color/accent"
             android:textColor="@color/black" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/decodeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="↑ 解码"
+            android:textSize="15sp"
+            android:layout_marginStart="8dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/accent"
+            app:strokeColor="@color/accent" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="转换结果"
-        android:textColor="@color/text_secondary"
-        android:textSize="13sp"
-        android:paddingTop="12dp"
-        android:paddingBottom="4dp" />
-
-    <ScrollView
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/card_bg"
-        android:padding="12dp">
+        android:layout_marginTop="8dp"
+        android:hint="编码 / 译文"
+        android:textColorHint="@color/text_secondary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <TextView
-            android:id="@+id/outputText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEncoded"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@color/text_primary"
-            android:textSize="14sp"
+            android:backgroundTint="@color/surface"
             android:fontFamily="monospace"
-            android:textIsSelectable="true"
-            android:hint="结果将显示在这里..."
-            android:textColorHint="@color/text_secondary" />
-    </ScrollView>
+            android:textSize="14sp"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/copyButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="复制结果"
-        android:textSize="14sp"
-        android:layout_marginTop="8dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:textColor="@color/accent"
-        app:strokeColor="@color/accent" />
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyTopButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="复制中文"
+            android:textSize="13sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/accent"
+            app:strokeColor="@color/accent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyBottomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="复制编码"
+            android:textSize="13sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/accent"
+            app:strokeColor="@color/accent" />
+    </LinearLayout>
 
 </LinearLayout>

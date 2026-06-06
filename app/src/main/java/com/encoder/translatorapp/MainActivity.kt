@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var selectedMode: ConvertMode? = null
-    private var isEncodeMode = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         setupChips()
         setupButtons()
-        updateModeUI()
     }
 
     private fun setupChips() {
@@ -53,101 +51,112 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        binding.modeToggleButton.setOnClickListener {
-            isEncodeMode = !isEncodeMode
-            updateModeUI()
-        }
-
-        binding.convertButton.setOnClickListener {
-            val input = binding.inputText.text?.toString()?.trim()
+        binding.encodeButton.setOnClickListener {
+            val input = binding.inputChinese.text?.toString()?.trim()
             if (input.isNullOrEmpty()) {
-                Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "请在上方输入中文", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (selectedMode == null) {
                 Toast.makeText(this, "请选择转换方式", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (isEncodeMode) encode(input) else decode(input)
+            encode(input)
         }
 
-        binding.copyButton.setOnClickListener {
-            val text = binding.outputText.text?.toString()
-            if (text.isNullOrEmpty()) {
-                Toast.makeText(this, "没有可复制的内容", Toast.LENGTH_SHORT).show()
+        binding.decodeButton.setOnClickListener {
+            val input = binding.inputEncoded.text?.toString()?.trim()
+            if (input.isNullOrEmpty()) {
+                Toast.makeText(this, "请在下方输入编码内容", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.setPrimaryClip(ClipData.newPlainText("result", text))
-            Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
+            if (selectedMode == null) {
+                Toast.makeText(this, "请选择转换方式", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            decode(input)
+        }
+
+        binding.copyTopButton.setOnClickListener {
+            copyToClipboard(binding.inputChinese.text?.toString(), "中文")
+        }
+
+        binding.copyBottomButton.setOnClickListener {
+            copyToClipboard(binding.inputEncoded.text?.toString(), "编码")
         }
     }
 
-    private fun updateModeUI() {
-        if (isEncodeMode) {
-            binding.modeToggleButton.text = "编码"
-            binding.convertButton.text = "编 码"
-            binding.subtitleText.text = "中文 → 编码 / 翻译"
-        } else {
-            binding.modeToggleButton.text = "解码"
-            binding.convertButton.text = "解 码"
-            binding.subtitleText.text = "编码 / 外语 → 中文"
+    private fun copyToClipboard(text: String?, label: String) {
+        if (text.isNullOrEmpty()) {
+            Toast.makeText(this, "没有可复制的内容", Toast.LENGTH_SHORT).show()
+            return
         }
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, text))
+        Toast.makeText(this, "已复制", Toast.LENGTH_SHORT).show()
     }
 
     private fun encode(input: String) {
         when (selectedMode) {
-            ConvertMode.BASE64 -> showResult(Encoders.toBase64(input))
-            ConvertMode.URL_ENCODE -> showResult(Encoders.toUrlEncoding(input))
-            ConvertMode.UNICODE -> showResult(Encoders.toUnicodeEscape(input))
-            ConvertMode.HTML_ENTITY -> showResult(Encoders.toHtmlEntities(input))
-            ConvertMode.XML -> showResult(Encoders.toXml(input))
-            ConvertMode.MORSE -> showResult(Encoders.toMorseCode(input))
-            ConvertMode.ENGLISH -> translateOnline(input, "zh", "en")
-            ConvertMode.ICELANDIC -> translateOnline(input, "zh", "is")
+            ConvertMode.BASE64 -> showEncoded(Encoders.toBase64(input))
+            ConvertMode.URL_ENCODE -> showEncoded(Encoders.toUrlEncoding(input))
+            ConvertMode.UNICODE -> showEncoded(Encoders.toUnicodeEscape(input))
+            ConvertMode.HTML_ENTITY -> showEncoded(Encoders.toHtmlEntities(input))
+            ConvertMode.XML -> showEncoded(Encoders.toXml(input))
+            ConvertMode.MORSE -> showEncoded(Encoders.toMorseCode(input))
+            ConvertMode.ENGLISH -> translateOnline(input, "zh", "en", false)
+            ConvertMode.ICELANDIC -> translateOnline(input, "zh", "is", false)
             null -> {}
         }
     }
 
     private fun decode(input: String) {
         when (selectedMode) {
-            ConvertMode.BASE64 -> safeDecodeResult { Encoders.fromBase64(input) }
-            ConvertMode.URL_ENCODE -> safeDecodeResult { Encoders.fromUrlEncoding(input) }
-            ConvertMode.UNICODE -> safeDecodeResult { Encoders.fromUnicodeEscape(input) }
-            ConvertMode.HTML_ENTITY -> safeDecodeResult { Encoders.fromHtmlEntities(input) }
-            ConvertMode.XML -> safeDecodeResult { Encoders.fromXml(input) }
-            ConvertMode.MORSE -> safeDecodeResult { Encoders.fromMorseCode(input) }
-            ConvertMode.ENGLISH -> translateOnline(input, "en", "zh")
-            ConvertMode.ICELANDIC -> translateOnline(input, "is", "zh")
+            ConvertMode.BASE64 -> safeDecode { Encoders.fromBase64(input) }
+            ConvertMode.URL_ENCODE -> safeDecode { Encoders.fromUrlEncoding(input) }
+            ConvertMode.UNICODE -> safeDecode { Encoders.fromUnicodeEscape(input) }
+            ConvertMode.HTML_ENTITY -> safeDecode { Encoders.fromHtmlEntities(input) }
+            ConvertMode.XML -> safeDecode { Encoders.fromXml(input) }
+            ConvertMode.MORSE -> safeDecode { Encoders.fromMorseCode(input) }
+            ConvertMode.ENGLISH -> translateOnline(input, "en", "zh", true)
+            ConvertMode.ICELANDIC -> translateOnline(input, "is", "zh", true)
             null -> {}
         }
     }
 
-    private fun safeDecodeResult(block: () -> String) {
+    private fun showEncoded(result: String) {
+        binding.inputEncoded.setText(result)
+    }
+
+    private fun showDecoded(result: String) {
+        binding.inputChinese.setText(result)
+    }
+
+    private fun safeDecode(block: () -> String) {
         try {
-            showResult(block())
+            showDecoded(block())
         } catch (e: Exception) {
-            showResult("解码失败: ${e.message}")
+            Toast.makeText(this, "解码失败: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun translateOnline(input: String, sourceLang: String, targetLang: String) {
-        binding.outputText.text = "翻译中..."
-        binding.convertButton.isEnabled = false
+    private fun translateOnline(input: String, sourceLang: String, targetLang: String, isDecode: Boolean) {
+        val loadingTarget = if (isDecode) binding.inputChinese else binding.inputEncoded
+        loadingTarget.setText("翻译中...")
+        binding.encodeButton.isEnabled = false
+        binding.decodeButton.isEnabled = false
 
         lifecycleScope.launch {
             try {
                 val result = TranslationApi.translate(input, sourceLang, targetLang)
-                showResult(result)
+                if (isDecode) showDecoded(result) else showEncoded(result)
             } catch (e: Exception) {
-                showResult("翻译失败: ${e.message}")
+                Toast.makeText(this@MainActivity, "翻译失败: ${e.message}", Toast.LENGTH_SHORT).show()
+                loadingTarget.setText("")
             } finally {
-                binding.convertButton.isEnabled = true
+                binding.encodeButton.isEnabled = true
+                binding.decodeButton.isEnabled = true
             }
         }
-    }
-
-    private fun showResult(result: String) {
-        binding.outputText.text = result
     }
 }
