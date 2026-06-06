@@ -1,6 +1,7 @@
 package com.encoder.translatorapp
 
 import android.util.Base64
+import java.net.URLDecoder
 import java.net.URLEncoder
 
 object Encoders {
@@ -75,5 +76,69 @@ object Encoders {
                 }
             }
         }.joinToString(" ")
+    }
+
+    // ===== 解码方法 =====
+
+    fun fromBase64(input: String): String {
+        return String(Base64.decode(input.trim(), Base64.NO_WRAP), Charsets.UTF_8)
+    }
+
+    fun fromUrlEncoding(input: String): String {
+        return URLDecoder.decode(input, "UTF-8")
+    }
+
+    fun fromUnicodeEscape(input: String): String {
+        val regex = Regex("""\\u([0-9A-Fa-f]{4})""")
+        return regex.replace(input) { match ->
+            val code = match.groupValues[1].toInt(16)
+            code.toChar().toString()
+        }
+    }
+
+    fun fromHtmlEntities(input: String): String {
+        val hexRegex = Regex("""&#x([0-9A-Fa-f]+);""")
+        val decRegex = Regex("""&#(\d+);""")
+        var result = hexRegex.replace(input) { match ->
+            val code = match.groupValues[1].toInt(16)
+            code.toChar().toString()
+        }
+        result = decRegex.replace(result) { match ->
+            val code = match.groupValues[1].toInt()
+            code.toChar().toString()
+        }
+        return result
+    }
+
+    fun fromXml(input: String): String {
+        val regex = Regex("""<content>(.*?)</content>""", RegexOption.DOT_MATCHES_ALL)
+        val match = regex.find(input)
+        return match?.groupValues?.get(1)?.trim() ?: "无法解析XML内容"
+    }
+
+    fun fromMorseCode(input: String): String {
+        val reverseMorseMap = mapOf(
+            ".-" to 'A', "-..." to 'B', "-.-." to 'C', "-.." to 'D',
+            "." to 'E', "..-." to 'F', "--." to 'G', "...." to 'H',
+            ".." to 'I', ".---" to 'J', "-.-" to 'K', ".-.." to 'L',
+            "--" to 'M', "-." to 'N', "---" to 'O', ".--." to 'P',
+            "--.-" to 'Q', ".-." to 'R', "..." to 'S', "-" to 'T',
+            "..-" to 'U', "...-" to 'V', ".--" to 'W', "-..-" to 'X',
+            "-.--" to 'Y', "--.." to 'Z',
+            "-----" to '0', ".----" to '1', "..---" to '2',
+            "...--" to '3', "....-" to '4', "....." to '5',
+            "-...." to '6', "--..." to '7', "---.." to '8',
+            "----." to '9',
+            "/" to ' ', ".-.-.-" to '.', "--..--" to ',',
+            "..--.." to '?', "-.-.--" to '!', ".----." to '\'',
+            ".-..-." to '"', "---..." to ':', "-.-.-." to ';',
+            "-...-" to '=', ".-.-." to '+', "-....-" to '-',
+            "-..-." to '/', "-.--." to '(', "-.--.-" to ')',
+            ".--.-." to '@'
+        )
+
+        return input.split(" ").map { code ->
+            reverseMorseMap[code]?.toString() ?: "?"
+        }.joinToString("")
     }
 }

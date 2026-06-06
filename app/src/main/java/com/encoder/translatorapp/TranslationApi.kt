@@ -15,8 +15,8 @@ object TranslationApi {
         .readTimeout(15, TimeUnit.SECONDS)
         .build()
 
-    suspend fun translate(text: String, targetLang: String): String = withContext(Dispatchers.IO) {
-        val langPair = "zh|$targetLang"
+    suspend fun translate(text: String, sourceLang: String, targetLang: String): String = withContext(Dispatchers.IO) {
+        val langPair = "$sourceLang|$targetLang"
         val encoded = URLEncoder.encode(text, "UTF-8")
         val url = "https://api.mymemory.translated.net/get?q=$encoded&langpair=$langPair"
 

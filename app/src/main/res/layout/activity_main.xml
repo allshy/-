@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/titleText"
         android:text="编码翻译器"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
@@ -20,6 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/subtitleText"
         android:text="中文 → 编码 / 翻译"
         android:textColor="@color/text_secondary"
         android:textSize="13sp"
@@ -146,15 +148,35 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/convertButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="转 换"
-        android:textSize="16sp"
+        android:orientation="horizontal"
         android:layout_marginTop="12dp"
-        android:backgroundTint="@color/accent"
-        android:textColor="@color/black" />
+        android:gravity="center_vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/modeToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="编码"
+            android:textSize="14sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/accent"
+            app:strokeColor="@color/accent"
+            app:cornerRadius="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/convertButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="编 码"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
