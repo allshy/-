@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.encoder.translatorapp.databinding.ActivityMainBinding
-import com.google.android.material.chip.Chip
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -46,22 +45,7 @@ class MainActivity : AppCompatActivity() {
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedMode = mode
-                    updateChipColors()
                 }
-            }
-        }
-    }
-
-    private fun updateChipColors() {
-        val chipGroup = binding.chipGroup
-        for (i in 0 until chipGroup.childCount) {
-            val chip = chipGroup.getChildAt(i) as? Chip ?: continue
-            if (chip.isChecked) {
-                chip.setChipBackgroundColorResource(R.color.chip_selected)
-                chip.setTextColor(getColor(R.color.black))
-            } else {
-                chip.setChipBackgroundColorResource(R.color.chip_unselected)
-                chip.setTextColor(getColor(R.color.white))
             }
         }
     }

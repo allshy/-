@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -61,8 +62,7 @@
             android:id="@+id/chipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleSelection="true"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipBase64"
@@ -70,8 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Base64"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -80,8 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="URL编码"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -90,8 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unicode"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -100,8 +100,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="HTML实体"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -110,8 +110,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="XML文本"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -120,8 +120,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="摩尔斯电码"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -130,8 +130,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="英语"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
@@ -140,8 +140,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="冰岛语"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/chip_unselected"
+                android:textColor="@color/chip_text_selector"
+                app:chipBackgroundColor="@color/chip_bg_selector"
                 app:checkedIconVisible="false" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
@@ -193,7 +193,6 @@
         android:layout_marginTop="8dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:textColor="@color/accent"
-        app:strokeColor="@color/accent"
-        xmlns:app="http://schemas.android.com/apk/res-auto" />
+        app:strokeColor="@color/accent" />
 
 </LinearLayout>
